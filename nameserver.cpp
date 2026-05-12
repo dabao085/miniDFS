@@ -137,6 +137,10 @@ void NameServer::operator()(){
                     dataServers_[i]->cv.notify_all();
                 }
             }
+        } else if (parameters[0] == "rm") {
+          if (fileTree_.delete_node(parameters[1])) {
+            std::cout << "delete node " << parameters[1] << " successfully!";
+          }
         }
         else
             std::cerr << "wrong command." << std::endl;

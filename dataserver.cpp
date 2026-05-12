@@ -84,6 +84,9 @@ void DataServer::fetch(){
     }
 }
 
+void DataServer::remove() {
+
+}
 
 void DataServer::locate(){
     std::string filePath = name_ + "/" + std::to_string(fid) + " " + std::to_string(offset);

@@ -16,6 +16,7 @@ private:
     void read();
     void locate();
     void fetch();
+    void remove();
 public:
     std::mutex mtx;
     std::condition_variable cv;

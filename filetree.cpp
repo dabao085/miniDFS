@@ -67,6 +67,51 @@ bool FileTree::insert_node(const std::string &path, const bool isFile){
     return true;
 }
 
+bool FileTree::delete_node(const std::string& path) {
+  if (path.empty() || path == "/") {
+    return false;
+  }
+
+  TreeNode * node = nullptr;
+  bool isFound = find_node(path, &node);
+  if(!isFound) return false;
+
+  if (node) {
+    TreeNode* parent = node->parent;
+    // It shouldn't be possible, just for checking
+    if (!parent) {
+      return false;
+    }
+
+    TreeNode* prev_sibling = parent->firstSon;
+
+    // If node is the first son
+    if (node == parent->firstSon) {
+      // If node is the only son
+      if (!node->nextSibling) {
+        parent->firstSon = nullptr;
+      } else {
+        parent->firstSon = node->nextSibling;
+      }
+    } else { // If node is not the first son
+      while (prev_sibling && prev_sibling->nextSibling != node) {
+        prev_sibling = prev_sibling->nextSibling;
+      }
+
+      // If node is the last son
+      if (!node->nextSibling) {
+        prev_sibling->nextSibling = nullptr;
+      } else {
+        prev_sibling->nextSibling = node->nextSibling;
+      }
+    }
+
+    delete node;
+  }
+
+  return true;
+}
+
 bool FileTree::find_node(const std::string &path, TreeNode **last_node)const{
     std::vector<std::string> path_folders = split(path, '/');
     TreeNode *node = _root->firstSon;
@@ -99,7 +144,7 @@ void FileTree::list(std::map<std::string, std::pair<int, int>>& meta){
     list(_root, meta);
 }
 
-const std::string FileTree::list_node_path(TreeNode* node) {
+std::string FileTree::list_node_path(TreeNode* node) const {
   while (node->parent) {
     return list_node_path(node->parent) + "/" + node->value_;
   }

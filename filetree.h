@@ -20,10 +20,11 @@ private:
 public:
     FileTree();
     bool insert_node(const std::string &path, const bool isFile);
+    bool delete_node(const std::string& path);
     bool find_node(const std::string &path, TreeNode **parent)const;
     void list(TreeNode *node, std::map<std::string, std::pair<int, int>>& meta);
     void list(std::map<std::string, std::pair<int, int>>& meta);
-    const std::string list_node_path(TreeNode* node);
+    std::string list_node_path(TreeNode* node) const;
 };
 
 #endif
